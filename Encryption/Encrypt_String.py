@@ -1,38 +1,39 @@
 import string
 
 
-def get_comparable_string():
+def main():
+    input_file = input('Input file name: ')
+    output_file = input('Output file name: ')
+
+    with open(input_file, 'r') as r:
+        input_str = r.read()
+    with open(output_file, 'w') as w:
+        w.write(encrypt_string(input_str, int(input('Input number shift: ')),
+                               input('1 - encrypt\n2 - decrypt\nMake your choice: ')))
+        w.flush()
+
+
+def encrypt_string(input_string, number_shift, mode):
+    if mode == '1':
+        number_shift = number_shift
+    elif mode == '2':
+        number_shift = -number_shift
+    else:
+        print("Illegal parameter...")
+        exit()
+
     a = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
-    symbols = a + a.upper() + string.ascii_letters + string.digits
-    return symbols
-
-
-def get_input_string():
-    input_string = input("Input your string: ")
-    return input_string
-
-
-def encrypt_string(number_shift):
-    encrypted_string = ""
-    trigger = False
-    last_index_compstr = len(get_comparable_string()) - 1
-    for input_sym in get_input_string():
-        if input_sym == " ":
-            encrypted_string += " "
-        for symbol in get_comparable_string():
-            if input_sym == symbol:
-                current_ind_compstr = get_comparable_string().index(symbol)
-                if current_ind_compstr + number_shift <= last_index_compstr:
-                    encrypted_string += get_comparable_string()[current_ind_compstr + number_shift]
-                else:
-                    difference = current_ind_compstr + number_shift - len(get_comparable_string())
-                    if difference >= 0:
-                        if 0 + difference <= last_index_compstr:
-                            encrypted_string += get_comparable_string()[0 + difference]
-                        else:
-                            print("Слишком большой сдвиг")
-                            trigger = True
-        if trigger:
-            break
+    symbols = a + " " + a.upper() + string.ascii_letters + string.digits + string.punctuation
+    encrypted_string, length_symbols = "", len(symbols)
+    for input_char in input_string:
+        found_char_index = symbols.find(input_char)
+        if found_char_index == -1:
+            encrypted_string += input_char
+        else:
+            new_index = (found_char_index + number_shift) % length_symbols
+            encrypted_string += symbols[new_index]
 
     return encrypted_string
+
+
+main()
