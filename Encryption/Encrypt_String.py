@@ -4,17 +4,22 @@ import string
 def main():
     input_file = input('Input file name: ')
     output_file = input('Output file name: ')
-    key = int(input('Input key: '))
     mode = input('1 - encrypt\n2 - decrypt\nMake your choice: ')
+    key = check_input(mode)
+    with open(input_file, 'r') as r:
+        input_str = r.read()
+    with open(output_file, 'w') as w:
+        w.write(encrypt_string(input_str, key))
+
+
+def check_input(mode):
+    key = check_input(int(input('Input key: ')))
     if mode == '2':
         key = -key
     elif mode != '1':
         print("Illegal parameter...")
         exit()
-    with open(input_file, 'r') as r:
-        input_str = r.read()
-    with open(output_file, 'w') as w:
-        w.write(encrypt_string(input_str, key))
+    return key
 
 
 def encrypt_string(input_string, key):
