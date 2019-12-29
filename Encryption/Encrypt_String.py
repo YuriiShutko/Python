@@ -5,8 +5,8 @@ def main():
     try:
         input_file_name = input('Input file name: ')
         output_file_name = input('Output file name: ')
-        mode = input('1 - encrypt\n2 - decrypt\nMake your choice: ')
-        key = get_key(mode)
+        mode = int(input('1 - encrypt\n2 - decrypt\nMake your choice: '))
+        key = get_key(mode, int(input('Input key: ')))
         original_str = read_from_file(input_file_name)
         modified_str = encrypt_string(original_str, key)
         write_to_file(output_file_name, modified_str)
@@ -27,13 +27,12 @@ def write_to_file(output_file_name, out_str):
         w.write(out_str)
 
 
-def get_key(mode):
-    key = int(input('Input key: '))
-    if mode == '2':
-        key = -key
-    elif mode != '1':
+def get_key(mode, key_of_encryption):
+    if mode == 2:
+        key_of_encryption = -key_of_encryption
+    elif mode != 1:
         raise ValueError('Illegal mode parameter...')
-    return key
+    return key_of_encryption
 
 
 def encrypt_string(input_string, key):
@@ -49,6 +48,3 @@ def encrypt_string(input_string, key):
             encrypted_string += symbols[new_index]
 
     return encrypted_string
-
-
-main()
