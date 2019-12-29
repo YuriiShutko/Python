@@ -2,18 +2,28 @@ import string
 
 
 def main():
-    input_file = input('Input file name: ')
-    output_file = input('Output file name: ')
+    input_file_name = input('Input file name: ')
+    output_file_name = input('Output file name: ')
     mode = input('1 - encrypt\n2 - decrypt\nMake your choice: ')
-    key = check_input(mode)
-    with open(input_file, 'r') as r:
+    key = get_key(mode)
+    original_str = read_from_file(input_file_name)
+    modified_str = encrypt_string(original_str, key)
+    write_to_file(output_file_name, modified_str)
+
+
+def read_from_file(input_file_name):
+    with open(input_file_name, 'r') as r:
         input_str = r.read()
-    with open(output_file, 'w') as w:
-        w.write(encrypt_string(input_str, key))
+    return input_str
 
 
-def check_input(mode):
-    key = check_input(int(input('Input key: ')))
+def write_to_file(output_file_name, out_str):
+    with open(output_file_name, 'w') as w:
+        w.write(out_str)
+
+
+def get_key(mode):
+    key = int(input('Input key: '))
     if mode == '2':
         key = -key
     elif mode != '1':
