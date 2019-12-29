@@ -2,13 +2,18 @@ import string
 
 
 def main():
-    input_file_name = input('Input file name: ')
-    output_file_name = input('Output file name: ')
-    mode = input('1 - encrypt\n2 - decrypt\nMake your choice: ')
-    key = get_key(mode)
-    original_str = read_from_file(input_file_name)
-    modified_str = encrypt_string(original_str, key)
-    write_to_file(output_file_name, modified_str)
+    try:
+        input_file_name = input('Input file name: ')
+        output_file_name = input('Output file name: ')
+        mode = input('1 - encrypt\n2 - decrypt\nMake your choice: ')
+        key = get_key(mode)
+        original_str = read_from_file(input_file_name)
+        modified_str = encrypt_string(original_str, key)
+        write_to_file(output_file_name, modified_str)
+    except FileNotFoundError:
+        print('There is no such file!')
+    except ValueError:
+        print('Illegal key or mode format')
 
 
 def read_from_file(input_file_name):
@@ -27,8 +32,7 @@ def get_key(mode):
     if mode == '2':
         key = -key
     elif mode != '1':
-        print("Illegal parameter...")
-        exit()
+        raise ValueError('Illegal mode parameter...')
     return key
 
 
